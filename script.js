@@ -1,7 +1,6 @@
 const APIURL = `https://opentdb.com/api.php?amount=10&type=multiple`;
 
-const something = document.querySelector(".questions");
-const answers = document.querySelector(".answers");
+const game = document.querySelector(".questions");
 
 function sort(array) {
   let currentIndex = array.length;
@@ -41,16 +40,16 @@ function displayData(data) {
 
   for (let answers of allAnswers) {
     console.log(answers);
-    something.innerHTML = `
+    game.innerHTML = `
     ${questions
       .map(
         (question, index) =>
-          `<p>${question.question}</p>
+          `<p class="question">${question.question}</p>
           <p>${sort(allAnswers[index])}</p>
-          <div><button>${allAnswers[index][0]}</button></div>
-          <div><button>${allAnswers[index][1]}</button></div>
-          <div><button>${allAnswers[index][2]}</button></div>
-          <div><button>${allAnswers[index][3]}</button></div>
+          <div><button>A ${allAnswers[index][0]}</button></div>
+          <div><button>B ${allAnswers[index][1]}</button></div>
+          <div><button>C ${allAnswers[index][2]}</button></div>
+          <div><button>D ${allAnswers[index][3]}</button></div>
          `
       )
       .join("")}

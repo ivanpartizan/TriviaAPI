@@ -10,6 +10,29 @@ body {
   font-family: "Palanquin", sans-serif;
 }
 
+header {
+  background-color: #414141;
+  background-image: linear-gradient(#414141, #272727);
+  color: white;
+  text-align: center;
+}
+
+.game {
+  background-image: url("grid.png");
+  background-repeat: repeat;
+  width: 100vw;
+}
+
+.questions {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.question {
+  font-size: 30px;
+}
+
 button {
   font-family: "Palanquin", sans-serif;
+  width: 50%;
 }
