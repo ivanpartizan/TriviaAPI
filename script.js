@@ -1,5 +1,6 @@
 const intro = document.querySelector(".intro");
 const game = document.querySelector(".game");
+const scoreCard = document.querySelector(".scoreCard");
 
 const question = document.querySelector(".question");
 const choices = Array.from(document.querySelectorAll(".answers-text"));
@@ -7,17 +8,40 @@ const scoreText = document.querySelector("#score");
 const progressText = document.querySelector(".text");
 const fullProgressBar = document.querySelector(".fullProgressBar");
 
+const correctAnswersText = document.querySelector(".correctAnswers");
+const points = document.querySelector(".points");
+const returnButton = document.querySelector(".returnButton");
+
 let questions = [];
 let availableQuestions = [];
 let acceptingAnswers = false;
 let questionNumber = 0;
 let score = 0;
+let correctAnswers = 0;
 
 function startQuiz() {
   intro.classList.add("hidden");
   game.classList.remove("hidden");
   getQuestions();
 }
+
+// Sports
+("https://opentdb.com/api.php?amount=10&category=21&type=multiple");
+
+// Music
+("https://opentdb.com/api.php?amount=10&category=12&type=multiple");
+
+// Film
+("https://opentdb.com/api.php?amount=10&category=11&type=multiple");
+
+// Geography
+("https://opentdb.com/api.php?amount=10&category=22&type=multiple");
+
+// History
+("https://opentdb.com/api.php?amount=10&category=23&type=multiple");
+
+// Science & Nature
+("https://opentdb.com/api.php?amount=10&category=17&type=multiple");
 
 const urlGeneralKnowledge =
   "https://opentdb.com/api.php?amount=10&category=9&type=multiple";
@@ -50,6 +74,8 @@ async function getQuestions() {
 function startGame() {
   questionNumber = 0;
   score = 0;
+  correctAnswers = 0;
+  scoreText.innerHTML = score;
   availableQuestions = [...questions];
   console.log(availableQuestions);
   displayQuestion();
@@ -94,10 +120,13 @@ choices.forEach((choice) => {
     let classToAdd =
       selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
     if (classToAdd === "correct") {
-      score++;
-      console.log(score);
+      correctAnswers++;
+      score += 10;
       scoreText.innerHTML = score;
       // incrementScore(CORRECT_BONUS);
+    } else {
+      score -= 5;
+      scoreText.innerHTML = score;
     }
     selectedChoice.parentElement.classList.add(classToAdd);
 
@@ -109,50 +138,18 @@ choices.forEach((choice) => {
 });
 
 function endGame() {
+  points.innerHTML = score;
+  correctAnswersText.innerHTML = `${correctAnswers} of 10`;
   game.classList.add("hidden");
+  scoreCard.classList.remove("hidden");
+}
+
+returnButton.addEventListener("click", backHome);
+
+function backHome() {
+  scoreCard.classList.add("hidden");
   intro.classList.remove("hidden");
 }
-// showQuestion = (questions) => {
-//   const questionHTML = document.createElement("div");
-
-//   questions.forEach((question) => {
-//     rightAns = question.correct_answer;
-
-//     let possibleAnswers = question.incorrect_answers;
-//     possibleAnswers.splice(Math.floor(Math.random() * 3), 0, rightAns);
-
-//     questionHTML.innerHTML = `<div class="row justify-content-between heading">
-//       <p class="category">Category:${question.category}</p>
-
-//       <div>
-//       <h2 class="text-center">${question.question}`;
-
-//     const answerDiv = document.createElement("div");
-//     answerDiv.classList.add(
-//       "questions",
-//       "row",
-//       "justify-content-around",
-//       "mt-5"
-//     );
-//     console.log(answerDiv);
-//     possibleAnswers.forEach((answer) => {
-//       const answerHTML = document.createElement("li");
-//       answerHTML.classList.add("col-12", "col-md-5");
-//       answerHTML.textContent = answer;
-
-//       // answerHTML.onclick = selectAnswer;
-
-//       answerDiv.appendChild(answerHTML);
-//     });
-//     questionHTML.appendChild(answerDiv); /*Main wrapper */
-
-//     document.querySelector("#app").appendChild(questionHTML);
-//   });
-// };
-
-// const APIURL = `https://opentdb.com/api.php?amount=10&type=multiple`;
-
-// const game = document.querySelector(".questions");
 
 function sort(array) {
   let currentIndex = array.length;
@@ -167,46 +164,3 @@ function sort(array) {
   }
   return array;
 }
-
-// async function getQuestions() {
-//   const response = await fetch(APIURL);
-//   const data = await response.json();
-//   displayData(data);
-// }
-
-// function displayData(data) {
-//   const questions = data.results;
-//   console.log(questions);
-
-//   let allAnswers = [];
-//   for (let i = 0; i < questions.length; i++) {
-//     allAnswers.push([
-//       ...questions[i].incorrect_answers,
-//       questions[i].correct_answer,
-//     ]);
-//   }
-//   console.log(allAnswers);
-
-//   let sortedAnswers = sort(allAnswers);
-//   console.log(sortedAnswers);
-//   const game = document.querySelector(".question-text");
-//   for (let answers of allAnswers) {
-//     console.log(answers);
-//     game.innerHTML = `
-//     ${questions
-//       .map(
-//         (question, index) =>
-//           `<p class="question">${question.question}</p>
-//           <p>${sortedAnswers[index]}</p>
-//           <div><button>A ${sortedAnswers[index][0]}</button></div>
-//           <div><button>B ${sortedAnswers[index][1]}</button></div>
-//           <div><button>C ${sortedAnswers[index][2]}</button></div>
-//           <div><button>D ${sortedAnswers[index][3]}</button></div>
-//          `
-//       )
-//       .join("")}
-//     `;
-//   }
-// }
-
-// getQuestions();
