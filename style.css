@@ -31,7 +31,8 @@ header {
   height: 10vh;
 }
 
-.box {
+.box,
+.box1 {
   color: #272727;
   background-color: #fff;
   border: 1px solid #bfc3c8;
@@ -203,6 +204,7 @@ i {
     font-size: 12px;
     height: auto;
     padding: 1%;
+    margin-top: 1vh;
   }
   .box1 {
     flex-direction: column;
