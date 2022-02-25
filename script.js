@@ -18,6 +18,8 @@ let acceptingAnswers = false;
 let questionNumber = 0;
 let score = 0;
 let correctAnswers = 0;
+let numberCategory;
+let API_URL;
 
 function startQuiz() {
   intro.classList.add("hidden");
@@ -25,32 +27,19 @@ function startQuiz() {
   getQuestions();
 }
 
-// Sports
-("https://opentdb.com/api.php?amount=10&category=21&type=multiple");
+const boxes = document.querySelectorAll(".box");
+boxes.forEach((box) => {
+  box.addEventListener("click", () => {
+    numberCategory = box.dataset["category"];
+    API_URL = `https://opentdb.com/api.php?amount=10&category=${numberCategory}&type=multiple`;
 
-// Music
-("https://opentdb.com/api.php?amount=10&category=12&type=multiple");
-
-// Film
-("https://opentdb.com/api.php?amount=10&category=11&type=multiple");
-
-// Geography
-("https://opentdb.com/api.php?amount=10&category=22&type=multiple");
-
-// History
-("https://opentdb.com/api.php?amount=10&category=23&type=multiple");
-
-// Science & Nature
-("https://opentdb.com/api.php?amount=10&category=17&type=multiple");
-
-const urlGeneralKnowledge =
-  "https://opentdb.com/api.php?amount=10&category=9&type=multiple";
+    startQuiz();
+  });
+});
 
 async function getQuestions() {
-  const response = await fetch(urlGeneralKnowledge);
+  const response = await fetch(API_URL);
   const data = await response.json();
-  console.log(data);
-  console.log(data.results);
 
   questions = data.results.map((question) => {
     const questionObject = {
@@ -60,12 +49,9 @@ async function getQuestions() {
     const answerChoices = [...question.incorrect_answers];
     questionObject.answer = Math.ceil(Math.random() * 3);
     answerChoices.splice(questionObject.answer - 1, 0, question.correct_answer);
-    console.log(answerChoices);
     answerChoices.forEach((choice, index) => {
       questionObject[`choice${index + 1}`] = choice;
     });
-    // console.log(questionObject);
-    // console.log(questions);
     return questionObject;
   });
   startGame();
@@ -77,7 +63,6 @@ function startGame() {
   correctAnswers = 0;
   scoreText.innerHTML = score;
   availableQuestions = [...questions];
-  console.log(availableQuestions);
   displayQuestion();
 }
 
@@ -85,7 +70,6 @@ function displayQuestion() {
   if (availableQuestions.length === 0) {
     endGame();
   }
-  console.log(availableQuestions);
   questionNumber++;
 
   progressText.innerText = `Question ${questionNumber} / 10`;
@@ -93,7 +77,7 @@ function displayQuestion() {
 
   const questionIndex = Math.floor(Math.random() * availableQuestions.length);
   currentQuestion = availableQuestions[questionIndex];
-  console.log(currentQuestion);
+
   question.innerHTML = `${currentQuestion.question}`;
 
   choices.forEach((choice) => {
@@ -114,8 +98,6 @@ choices.forEach((choice) => {
     acceptingAnswers = false;
     const selectedChoice = e.target;
     const selectedAnswer = selectedChoice.dataset["number"];
-    console.log(selectedChoice);
-    console.log(selectedAnswer);
 
     let classToAdd =
       selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
@@ -123,7 +105,6 @@ choices.forEach((choice) => {
       correctAnswers++;
       score += 10;
       scoreText.innerHTML = score;
-      // incrementScore(CORRECT_BONUS);
     } else {
       score -= 5;
       scoreText.innerHTML = score;
